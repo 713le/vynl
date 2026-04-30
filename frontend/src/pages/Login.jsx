@@ -19,6 +19,8 @@ export default function Login() {
         password
       })
       localStorage.setItem('userId', res.data.id)
+      const p = await axios.get(`http://localhost:3000/api/users/${res.data.id}`)
+      localStorage.setItem('isAdmin',p.data.admin?'t':'f')
       window.dispatchEvent(new Event('userLoggedIn'))
       nav('/')
     } catch (err) {

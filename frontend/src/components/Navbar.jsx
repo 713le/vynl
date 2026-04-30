@@ -9,6 +9,7 @@ export default function Navbar({ searchValue, onSearchChange }) {
   const [user, setUser] = useState(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const userId = localStorage.getItem('userId')
+  const isAdmin = localStorage.getItem('isAdmin')
 
   useEffect(() => {
     if (userId) {
@@ -33,6 +34,7 @@ export default function Navbar({ searchValue, onSearchChange }) {
 
   const handleLogout = () => {
     localStorage.removeItem('userId')
+    localStorage.removeItem('isAdmin')
     window.location.href = '/'
   }
 
@@ -67,6 +69,11 @@ export default function Navbar({ searchValue, onSearchChange }) {
             <Link to="/profile" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
               PROFILE
             </Link>
+            {isAdmin==='t'&&(
+            <Link to="/admin" className="dropdown-item" onClick={()=>setDropdownOpen(false)}>
+              ADMIN
+            </Link>
+            )}
             <button className="dropdown-item" onClick={handleLogout}>
               LOG OUT
             </button>

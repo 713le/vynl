@@ -116,7 +116,7 @@ app.get('/api/users/:userId', async (req, res) => {
   try {
     const { userId } = req.params
     const result = await query(
-      'SELECT id, username, email FROM users WHERE id = $1',
+      'SELECT id, username, email, admin FROM users WHERE id = $1',
       [userId]
     )
     res.json(result.rows[0])
@@ -124,6 +124,116 @@ app.get('/api/users/:userId', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch user' })
   }
 })
+
+async function isAdmin(id){
+  try{
+    if(!id){
+      return false
+    }
+    const result = await query('SELECT admin FROM users where id = $1',[id]) 
+    if(!result.rows[0].admin){
+      return false
+    }
+    return true
+  }
+  catch(err){
+    return false
+  }
+  
+}
+app.get('/api/admin/users', async(req,res)=>{
+  //fetch all users from db
+  try{
+    const adminId  = req.headers['adminid']
+    if(await isAdmin(adminId)) {
+      const result = await query('SELECT id, username, email, admin, created_at FROM users ORDER by id')
+      res.json(result.rows)
+    }
+    else{
+      res.status(403).json({ error: 'Forbidden' }) 
+    }
+  }
+  catch(err){
+    res.status(500).json({ error: 'Failed to fetch users' })
+  }
+})
+app.delete('/api/admin/users/:userId', async(req,res)=>{
+  try{
+    const adminId  = req.headers['adminid']
+    const { userId } = req.params
+    if(await isAdmin(adminId)){
+      await query('DELETE FROM ratings WHERE user_id = $1',[userId])
+      await query('DELETE FROM users WHERE id = $1',[userId])
+      res.json({ success: true })}
+    else{
+      res.status(403).json({ error: 'Forbidden' }) 
+    }
+  }
+  catch(err){
+    res.status(500).json({ error: 'Failed to delete user' })
+  }
+})
+app.get('/api/admin/users/:userId/ratings', async (req, res) => {
+  // get ratings for user
+  try {
+    const adminId  = req.headers['adminid']
+     const { userId } = req.params
+    if(await isAdmin(adminId)){
+      const result = await query(
+      'SELECT id, album_id, score, note, album_data, category, updated_at FROM ratings WHERE user_id = $1 ORDER BY score DESC',
+      [userId]
+    )
+      const ratings = result.rows.map(r => ({
+      id: r.id,
+      album_id: r.album_id,
+      score: r.score,
+      category: r.category,
+      note: r.note,
+      album: r.album_data || {},
+      updatedAt: r.updated_at  
+    }))
+    res.json(ratings)
+    }
+    else{
+      res.status(403).json({ error: 'Forbidden' }) 
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch ratings' })
+  }
+})
+app.delete('/api/admin/users/:userId/ratings/:id', async(req,res)=>{
+  try{
+    //delete a users rating
+    const adminId  = req.headers['adminid']
+    const { userId, id } = req.params
+    if(await isAdmin(adminId)){
+      await query('DELETE FROM ratings WHERE user_id = $1 AND id = $2', [userId, id])
+      res.json({ success: true })}
+    else{
+      res.status(403).json({ error: 'Forbidden' }) 
+    }
+  }
+  catch(err){
+    res.status(500).json({ error: 'Failed to delete user rating' })
+  }
+})
+app.delete('/api/admin/users/:userId/ratings/:id/note', async(req,res)=>{
+  try{
+    //delete the note of a rating
+    const adminId  = req.headers['adminid']
+    const { userId, id } = req.params
+    if(await isAdmin(adminId)){
+      await query('UPDATE ratings SET note = NULL where user_id = $1 AND id = $2', [userId, id])
+      res.json({ success: true })}
+    else{
+      res.status(403).json({ error: 'Forbidden' }) 
+    }
+  }
+  catch(err){
+    res.status(500).json({ error: 'Failed to delete user rating' })
+  }
+})
+
 
 // Error handling
 app.use((_req, res) => {

@@ -10,6 +10,7 @@ import Followers from './pages/Followers'
 import Following from './pages/Following'
 import FindFriends from './pages/FindFriends'
 import UserProfile from './pages/UserProfile'
+import Admin from './pages/Admin'
 
 // Landing page with Sign up and Log in options
 function Landing() {
@@ -46,6 +47,7 @@ export default function App() {
   }, [])
 
   const isLoggedIn = Boolean(userId)
+  const isAdmin = localStorage.getItem('isAdmin')
 
   return (
     <BrowserRouter>
@@ -60,6 +62,7 @@ export default function App() {
         <Route path="/following/:userId" element={isLoggedIn ? <Following /> : <Navigate to="/" />} />
         <Route path="/find-friends" element={isLoggedIn ? <FindFriends /> : <Navigate to="/" />} />
         <Route path="/user/:userId" element={isLoggedIn ? <UserProfile /> : <Navigate to="/" />} />
+        <Route path="/admin" element={isLoggedIn&&(isAdmin==='t')?<Admin/>:<Navigate to="/"/>}/>
       </Routes>
     </BrowserRouter>
   )
