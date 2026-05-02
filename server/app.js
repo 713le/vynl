@@ -141,7 +141,6 @@ app.get('/api/users/:userId', async (req, res) => {
   }
 })
 
-<<<<<<< HEAD
 async function isAdmin(id){
   try{
     if(!id){
@@ -251,7 +250,6 @@ app.delete('/api/admin/users/:userId/ratings/:id/note', async(req,res)=>{
   }
 })
 
-=======
 // Followers/Following endpoints
 app.post('/api/follow/:userId', async (req, res) => {
   // Follow a user
@@ -343,7 +341,6 @@ app.get('/api/follow/status/:userId', async (req, res) => {
     res.status(500).json({ error: 'Failed to check follow status' })
   }
 })
->>>>>>> 2c2bcaf (updated readme)
 
 // Error handling
 app.use((_req, res) => {
