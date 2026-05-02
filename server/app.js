@@ -20,6 +20,22 @@ const pool = new Pool({
 
 const query = (text, params) => pool.query(text, params)
 
+// Create followers table if it doesn't exist
+const initDb = async () => {
+  await query(`
+    CREATE TABLE IF NOT EXISTS followers (
+      id SERIAL PRIMARY KEY,
+      follower_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      following_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(follower_id, following_id)
+    )
+  `)
+  await query(`CREATE INDEX IF NOT EXISTS idx_followers_follower ON followers(follower_id)`)
+  await query(`CREATE INDEX IF NOT EXISTS idx_followers_following ON followers(following_id)`)
+}
+initDb()
+
 // Health check
 app.get('/up', (_req, res) => res.json({ status: 'up' }))
 
@@ -125,6 +141,7 @@ app.get('/api/users/:userId', async (req, res) => {
   }
 })
 
+<<<<<<< HEAD
 async function isAdmin(id){
   try{
     if(!id){
@@ -234,6 +251,99 @@ app.delete('/api/admin/users/:userId/ratings/:id/note', async(req,res)=>{
   }
 })
 
+=======
+// Followers/Following endpoints
+app.post('/api/follow/:userId', async (req, res) => {
+  // Follow a user
+  try {
+    const followerId = req.body.followerId
+    const followingId = parseInt(req.params.userId)
+    if (followerId === followingId) {
+      return res.status(400).json({ error: 'Cannot follow yourself' })
+    }
+    await query(
+      'INSERT INTO followers (follower_id, following_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+      [followerId, followingId]
+    )
+    res.json({ success: true })
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to follow user' })
+  }
+})
+
+app.delete('/api/follow/:userId', async (req, res) => {
+  // Unfollow a user
+  try {
+    const followerId = req.body.followerId
+    const followingId = parseInt(req.params.userId)
+    await query('DELETE FROM followers WHERE follower_id = $1 AND following_id = $2', [followerId, followingId])
+    res.json({ success: true })
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to unfollow user' })
+  }
+})
+
+app.get('/api/followers/:userId', async (req, res) => {
+  // Get followers for a user
+  try {
+    const { userId } = req.params
+    const result = await query(
+      `SELECT u.id, u.username FROM users u
+       INNER JOIN followers f ON f.follower_id = u.id
+       WHERE f.following_id = $1`,
+      [userId]
+    )
+    res.json(result.rows)
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch followers' })
+  }
+})
+
+app.get('/api/following/:userId', async (req, res) => {
+  // Get following for a user
+  try {
+    const { userId } = req.params
+    const result = await query(
+      `SELECT u.id, u.username FROM users u
+       INNER JOIN followers f ON f.following_id = u.id
+       WHERE f.follower_id = $1`,
+      [userId]
+    )
+    res.json(result.rows)
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch following' })
+  }
+})
+
+app.get('/api/users/search/:username', async (req, res) => {
+  // Search for users by username
+  try {
+    const { username } = req.params
+    const result = await query(
+      'SELECT id, username FROM users WHERE username ILIKE $1 LIMIT 20',
+      [`%${username}%`]
+    )
+    res.json(result.rows)
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to search users' })
+  }
+})
+
+app.get('/api/follow/status/:userId', async (req, res) => {
+  // Check if current user follows target user
+  try {
+    const currentUserId = parseInt(req.query.currentUserId)
+    const targetUserId = parseInt(req.params.userId)
+    const result = await query(
+      'SELECT 1 FROM followers WHERE follower_id = $1 AND following_id = $2',
+      [currentUserId, targetUserId]
+    )
+    res.json({ isFollowing: result.rows.length > 0 })
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to check follow status' })
+  }
+})
+>>>>>>> 2c2bcaf (updated readme)
 
 // Error handling
 app.use((_req, res) => {
