@@ -28,7 +28,7 @@ export default function Admin() {
     }
   }
 async function deleteUser(id){
-    const confirm = window.confirm("Delete User and all their ratings")
+    const confirm = window.confirm("Delete user and all their ratings?")
     if(confirm){
         await fetch(`http://localhost:3000/api/admin/users/${id}`,{
             method: 'DELETE', headers:{'Content-Type': 'application/json','adminid':userId}})
@@ -74,10 +74,10 @@ async function deleteNote(uId,rId){
   return (
     <main className="profile-page">
           <header className="profile-header">
-            <img className="profile-photo" src={profile} alt="Admin" />
+            {/* <img className="profile-photo" src={profile} alt="Admin" /> */}
             <div className="profile-meta">
-              <h2>Admin</h2>
-            <p className="profile-bio">Users and Ratings.</p>
+              <h2>Admin Dashboard</h2>
+            <p className="profile-bio">View Users and Ratings</p>
                       <div className="profile-stats">
                         <div><strong>{users.length}</strong><div>Users</div></div>
 
@@ -108,12 +108,10 @@ async function deleteNote(uId,rId){
     )}
     {screen === 'ratings'&&(
         <section className="ratings-feed">
-            <h3 className="activity-title">{chosenUser.username}'s ratings
-                <button onClick={()=>{setScreen('users')
+            <button className="back-btn" onClick={()=>{setScreen('users')
                                     setChosenUser(null)
-                                    setRatings([])}}>Back</button>
-                  
-            </h3>
+                                    setRatings([])}}>VIEW OTHER USERS</button>
+            <h3 className="activity-title">{chosenUser.username}'s ratings</h3>
         {ratings.length === 0 && <p className="empty">No ratings found</p>}
         {ratings.map(r=>(
             <article key={r.id} className="rating-item">
@@ -128,7 +126,7 @@ async function deleteNote(uId,rId){
                     <button className="remove-btn" onClick={() => {deleteRating(chosenUser.id,r.id) }}>Delete Rating</button>
                     {r.note&&(
                         <button className="remove-btn" onClick={()=>deleteNote(chosenUser.id,r.id)}>
-                        Delete note
+                        Delete Note
                         </button>
                     )}
                 </div>

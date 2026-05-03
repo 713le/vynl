@@ -9,13 +9,13 @@
   border: none;
   font-size: 16px;
   cursor: pointer;
-  color: #666;
+  color: #000;
   margin-bottom: 20px;
   padding: 0;
 }
 
 .back-button:hover {
-  color: #000;
+  text-decoration: underline;
 }
 
 .profile-header {
@@ -124,8 +124,8 @@
 }
 
 .rating-art {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
   border-radius: 4px;
 }
