@@ -1,4 +1,15 @@
-/* Neo-Brutalist Design System */
+/**
+ * styles.css - Global design system & reusable component styles
+ * 
+ * Design System: Neo-Brutalist
+ * - Color palette: Black (#000), cream (#fff1cd), yellow (#ffd85b), orange (#ff8c42)
+ * - Typography: 'Inter' for main text (sans-serif), 'DM Mono' for secondary text
+ * - Borders: 1px solid black on all interactive elements
+ * - Interactions: Hover = black background with cream text
+ * - Layout: Box-sizing border-box applied globally for predictable sizing
+ */
+
+/* Reset and base styles */
 * {
   box-sizing: border-box;
 }
@@ -7,49 +18,50 @@ body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background: #fff1cd;
-  color: #000;
+  background: #fff1cd;  /* Cream background throughout app */
+  color: #000;           /* Pure black text */
 }
 
-/* Typography */
+/* TYPOGRAPHY SECTION - Heading and text styling */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  margin: 0;
+  font-weight: 700;      /* Bold headings */
+  margin: 0;             /* No default margins */
 }
 
 p {
-  margin: 0;
+  margin: 0;             /* No default paragraph margins */
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.5;      /* Readable line spacing */
 }
 
-/* Mono font for secondary text */
+/* Helper class for monospace secondary text (artist names, metadata) */
 .mono-font {
   font-family: 'DM Mono', monospace;
   font-weight: 400;
 }
 
-/* Borders & Panels */
+/* INTERACTIVE ELEMENTS - Consistent styling for all inputs/buttons */
 button, input, textarea, select {
-  border: 1px solid #000;
+  border: 1px solid #000;   /* Bold 1px black border */
   font-family: 'Inter', sans-serif;
-  background: #fff1cd;
-  padding: 8px 12px;
-  cursor: pointer;
+  background: #fff1cd;      /* Cream background */
+  padding: 8px 12px;        /* Default padding */
+  cursor: pointer;          /* Indicate clickability */
 }
 
+/* Button interactions - Hover and active states */
 button:active {
-  background: #000;
-  color: #fff1cd;
+  background: #000;         /* Black background on click */
+  color: #fff1cd;           /* Cream text on click */
 }
 
 button:hover {
-  background: #000;
-  color: #fff1cd;
+  background: #000;         /* Black background on hover */
+  color: #fff1cd;           /* Cream text on hover */
 }
 
-/* Landing Page */
+/* LANDING PAGE - Full-screen entry point for logged-out users */
 .landing-page {
   min-height: 100vh;
   display: flex;
@@ -63,6 +75,7 @@ button:hover {
   max-width: 480px;
 }
 
+/* Animated spinning vinyl record emoji */
 .landing-logo {
   font-size: 80px;
   margin-bottom: 16px;
@@ -74,28 +87,32 @@ button:hover {
   to { transform: rotate(360deg); }
 }
 
+/* Large app title with tight letter spacing for impact */
 .landing-title {
   font-size: 72px;
   font-weight: 700;
   color: #000;
   margin: 0 0 8px 0;
-  letter-spacing: -2px;
+  letter-spacing: -2px;    /* Tighter letter spacing for bold look */
 }
 
+/* Tagline in monospace (secondary text style) */
 .landing-tagline {
   font-size: 18px;
-  color: #999;
+  color: #999;             /* Gray for secondary importance */
   font-family: 'DM Mono', monospace;
   margin: 0 0 40px 0;
 }
 
+/* Button row with space between Sign Up and Log In buttons */
 .landing-actions {
   display: flex;
-  gap: 16px;
+  gap: 16px;               /* Space between buttons */
   justify-content: center;
   margin-bottom: 40px;
 }
 
+/* BUTTON STYLES - Two variants for landing page */
 .btn {
   padding: 16px 32px;
   font-size: 16px;
@@ -105,56 +122,60 @@ button:hover {
   transition: all 0.2s ease;
 }
 
+/* Primary button - Orange with black border (Sign Up) */
 .btn-primary {
-  background: #ff8c42;
+  background: #ff8c42;     /* Orange background */
   color: #000;
   border: 1px solid #000;
 }
 
 .btn-primary:hover {
-  background: #000;
+  background: #000;        /* Invert to black on hover */
   color: #fff1cd;
-  transform: translateY(-2px);
+  transform: translateY(-2px);  /* Slight lift effect */
 }
 
+/* Secondary button - Transparent border style (Log In) */
 .btn-secondary {
-  background: transparent;
+  background: transparent;  /* Minimal style */
   color: #000;
   border: 1px solid #000;
 }
 
 .btn-secondary:hover {
-  background: #000;
+  background: #000;        /* Fill on hover */
   color: #fff1cd;
   transform: translateY(-2px);
 }
 
 
 
-/* Auth Form Pages */
+/* AUTH PAGES - Login and Signup form styling */
 .auth-page {
-  min-height: 100vh;
+  min-height: 100vh;       /* Full screen height */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
+/* Card container for login/signup form */
 .auth-card {
   padding: 40px;
   border-radius: 12px;
   width: 100%;
   max-width: 400px;
-  border: 1px solid #000;
+  border: 1px solid #000;  /* Consistent neo-brutalist border */
 }
 
+/* Header section with logo and title */
 .auth-header {
   text-align: center;
   margin-bottom: 32px;
 }
 
 .auth-logo {
-  font-size: 48px;
+  font-size: 48px;        /* Slightly smaller vinyl icon */
   margin-bottom: 12px;
 }
 
@@ -167,29 +188,33 @@ button:hover {
 
 .auth-subtitle {
   font-size: 14px;
-  color: #666;
+  color: #666;            /* Gray secondary text */
   font-family: 'DM Mono', monospace;
   margin: 0;
 }
 
+/* Form layout - vertical stack with consistent spacing */
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 16px;              /* Space between form groups */
 }
 
+/* Individual form field container */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 6px;               /* Space between label and input */
 }
 
+/* Form labels */
 .form-label {
   font-size: 14px;
   font-weight: 600;
   color: #000;
 }
 
+/* Text input styling */
 .form-input {
   padding: 14px 16px;
   font-size: 16px;
@@ -200,18 +225,19 @@ button:hover {
 
 .form-input:focus {
   outline: none;
-  border-color: #ff8c42;
+  border-color: #ff8c42;   /* Orange border on focus */
 }
 
 .form-input::placeholder {
-  color: #999;
+  color: #999;             /* Gray placeholder text */
 }
 
+/* Form submit button - Orange with emphasis */
 .auth-button {
   padding: 16px;
   font-size: 16px;
   font-weight: 700;
-  background: #ff8c42;
+  background: #ff8c42;     /* Orange action button */
   color: #000;
   border: 1px solid #000;
   border-radius: 8px;
@@ -221,12 +247,12 @@ button:hover {
 }
 
 .auth-button:hover {
-  background: #000;
+  background: #000;        /* Invert on hover */
   color: #fff1cd;
 }
 
 .auth-button:disabled {
-  background: #ccc;
+  background: #ccc;        /* Disabled state */
   cursor: not-allowed;
 }
 

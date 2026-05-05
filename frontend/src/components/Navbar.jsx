@@ -1,3 +1,16 @@
+/**
+ * Navbar.jsx - Top navigation bar shown to logged-in users
+ * 
+ * Components & Features:
+ * - Logo/Home button: Clears search and returns to Discover
+ * - Search bar: Real-time album search via iTunes API
+ * - User dropdown menu with:
+ *   - Profile link
+ *   - Admin link (only visible to admins)
+ *   - Logout button
+ * - Responsive and accessible navigation
+ */
+
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import SearchBar from './SearchBar'

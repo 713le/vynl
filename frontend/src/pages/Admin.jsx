@@ -1,3 +1,17 @@
+/**
+ * Admin.jsx - Admin dashboard for user and content moderation
+ * 
+ * Admin Capabilities:
+ * - View all users with their admin status
+ * - Delete users (and all associated ratings)
+ * - View a user's entire rating history
+ * - Delete individual ratings from any user
+ * - Delete notes from ratings while keeping the rating
+ * - Confirmation dialogs for all destructive actions
+ * 
+ * Access: Only users with admin=true in database can access this page
+ */
+
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import profile from '../data/vynl-profile.png'

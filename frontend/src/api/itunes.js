@@ -1,3 +1,13 @@
+/**
+ * itunes.js - External iTunes API integration
+ * 
+ * This module fetches album data from Apple's iTunes API:
+ * - searchAlbums: Search for albums by title/artist
+ * - lookupAlbum: Get detailed album info including track listing
+ * 
+ * Used throughout the app for real-time album discovery and details.
+ */
+
 import axios from 'axios'
 
 const BASE = 'https://itunes.apple.com'

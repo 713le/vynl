@@ -1,115 +1,47 @@
+/**
+ * ratings.js - API wrapper and configuration for the rating system
+ * 
+ * Responsibilities:
+ * - Export CATEGORIES config (liked/ok/disliked with score ranges)
+ * - Provide axios-based API wrappers for rating CRUD operations
+ * - Utility functions for score-to-category conversion and display
+ * 
+ * Note: The binary search algorithm for comparing albums is implemented in ComparisonFlow.jsx
+ * Score redistribution logic is in ComparisonFlow.jsx's redistributeScores() function
+ */
+
 import axios from 'axios'
 
 const API_BASE = 'http://localhost:3000'
 
-// Rating categories with their score ranges
+/**
+ * Rating categories configuration
+ * Defines score ranges for each sentiment tier and initial scores
+ * Used by RatingFlow to display category labels and ranges
+ */
 export const CATEGORIES = {
   liked: { label: 'I liked it', min: 6.7, max: 10.0, initial: 10.0 },
   ok: { label: 'It was ok', min: 3.7, max: 6.6, initial: 6.6 },
   disliked: { label: "I didn't like it", min: 0.0, max: 3.6, initial: 3.6 }
 }
 
-// Get category from score
+/**
+ * Convert a score (0-10) to its category
+ * Used by setRating() to tag ratings with their sentiment category
+ */
 export function getCategoryFromScore(score) {
   if (score >= CATEGORIES.liked.min) return 'liked'
   if (score >= CATEGORIES.ok.min) return 'ok'
   return 'disliked'
 }
 
-// Convert rank position to score within a category using linear interpolation
-function rankToScore(position, total, category) {
-  const { min, max } = CATEGORIES[category]
-  if (total <= 1) return max // Top position gets max score
-  
-  // Linear interpolation: position 0 = max, position total-1 = min
-  const normalizedPosition = position / (total - 1)
-  return max - normalizedPosition * (max - min)
-}
-
-// Get display score from stored rating (0-10 scale)
+/**
+ * Get display score from a rating object
+ * Safely extracts score with fallback to 0
+ * Used by Profile.jsx and Rating.jsx
+ */
 export function getDisplayScore(rating) {
   return rating?.score ?? 0
-}
-
-// Binary search insertion to find correct position in sorted list
-function findInsertPosition(newScore, sortedList, category) {
-  let low = 0
-  let high = sortedList.length
-  
-  while (low < high) {
-    const mid = Math.floor((low + high) / 2)
-    if (sortedList[mid].score >= newScore) {
-      low = mid + 1
-    } else {
-      high = mid
-    }
-  }
-  
-  return low
-}
-
-// Compare two albums using binary search (Beli-style)
-// Returns the new scores after comparison
-export function compareAlbums(winnerId, winnerScore, loserId, loserScore) {
-  const winnerCategory = getCategoryFromScore(winnerScore)
-  const loserCategory = getCategoryFromScore(loserScore)
-  
-  // If different categories, no change needed (already separated)
-  if (winnerCategory !== loserCategory) {
-    return { [winnerId]: winnerScore, [loserId]: loserScore }
-  }
-  
-  const category = winnerCategory
-  const { min, max } = CATEGORIES[category]
-  const range = max - min
-  
-  let newWinnerScore, newLoserScore
-  
-  if (winnerScore > loserScore) {
-    // Winner is already higher - spread them apart significantly
-    // New winner gets a boost, loser drops to make room
-    const boost = range * 0.15  // 15% of range
-    const drop = range * 0.10   // 10% of range
-    newWinnerScore = Math.min(max, winnerScore + boost)
-    newLoserScore = Math.max(min, loserScore - drop)
-  } else if (winnerScore < loserScore) {
-    // Winner is lower - move winner above loser with meaningful gap
-    // Place winner slightly above loser
-    newWinnerScore = Math.min(max, loserScore + range * 0.08)
-    newLoserScore = Math.max(min, loserScore)
-  } else {
-    // Same score - give winner a meaningful boost
-    newWinnerScore = Math.min(max, winnerScore + range * 0.10)
-    newLoserScore = Math.max(min, loserScore - range * 0.05)
-  }
-  
-  // Ensure winner >= loser
-  if (newWinnerScore < newLoserScore) {
-    newWinnerScore = newLoserScore
-  }
-  
-  return { [winnerId]: newWinnerScore, [loserId]: newLoserScore }
-}
-
-// Handle tie in comparison
-export function handleTie(album1Id, album1Score, album2Id, album2Score) {
-  const category1 = getCategoryFromScore(album1Score)
-  const category2 = getCategoryFromScore(album2Score)
-  
-  if (category1 !== category2) {
-    return { [album1Id]: album1Score, [album2Id]: album2Score }
-  }
-  
-  // Move slightly closer together
-  const category = category1
-  const { min, max } = CATEGORIES[category]
-  const mid = (album1Score + album2Score) / 2
-  const adjustment = (max - min) * 0.01 // 1% of range
-  
-  return {
-    [album1Id]: Math.max(min, mid - adjustment),
-    [album2Id]: Math.min(max, mid + adjustment)
-  }
 }
 
 // API functions
@@ -169,17 +101,4 @@ export async function removeRating(userId, albumId) {
   } catch (err) {
     console.error('Failed to delete rating:', err)
   }
-}
-
-// Legacy function for compatibility
-export function scoreAlbumByRank(position, totalAlbums) {
-  return rankToScore(position, totalAlbums, 'liked')
-}
-
-export function eloToDisplayScore(elo, allElos = []) {
-  if (!allElos || allElos.length === 0) return 5
-  const sorted = allElos.sort((a, b) => b - a)
-  let position = sorted.findIndex(e => e <= elo)
-  if (position === -1) position = sorted.length
-  return scoreAlbumByRank(position, sorted.length)
 }

@@ -1,3 +1,15 @@
+/**
+ * Profile.jsx - User's personal profile and rating collection page
+ * 
+ * Features:
+ * - Display user info (username, email, follower/following counts)
+ * - Show all user's rated albums sorted by score or recent activity
+ * - Toggle between "Top Rated" and "Recent" views
+ * - Allow removing ratings from their collection
+ * - Link to followers/following lists
+ * - Real-time updates when ratings change (via custom events)
+ */
+
 import React, { useMemo, useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { getAllRatings, removeRating, getDisplayScore } from '../utils/ratings'

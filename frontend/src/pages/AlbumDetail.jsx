@@ -1,3 +1,14 @@
+/**
+ * AlbumDetail.jsx - Individual album detail page with rating interface
+ * 
+ * Features:
+ * - Display album metadata (artwork, title, artist, track listing)
+ * - Show existing user rating if album was already rated
+ * - Launch RatingFlow modal for new or edited ratings
+ * - Support Beli-style binary search comparison for better ranking
+ * - Track all user ratings to calculate positions in ranked list
+ */
+
 import React, { useState, useEffect } from 'react'
 import { useParams, Link, useLocation } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'

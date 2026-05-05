@@ -1,3 +1,5 @@
+/* Navbar.css - Top navigation bar with logo, search, and user profile */
+
 .navbar {
   display: flex;
   align-items: stretch;
@@ -8,6 +10,7 @@
   font-family: 'Inter', sans-serif;
 }
 
+/* Individual navbar sections (logo, search, profile) */
 .navbar-panel {
   display: flex;
   align-items: center;
@@ -19,6 +22,7 @@
   border-right: none;
 }
 
+/* Logo button - returns to Discover */
 .navbar-logo {
   background: #fff1cd;
   font-size: 18px;
@@ -33,6 +37,7 @@
   color: #fff1cd;
 }
 
+/* Search bar section with flex growth */
 .navbar-search {
   flex: 1;
   min-width: 360px;
@@ -41,6 +46,7 @@
   padding: 0 16px;
 }
 
+/* User profile button with orange background */
 .navbar-profile {
   background: #ff8c42;
   color: #000;
@@ -69,6 +75,7 @@
   margin-left: 4px;
 }
 
+/* Dropdown menu for profile options */
 .navbar-profile-container {
   position: relative;
 }

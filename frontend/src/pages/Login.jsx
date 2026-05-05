@@ -1,3 +1,15 @@
+/**
+ * Login.jsx - User authentication page
+ * 
+ * Features:
+ * - Accept username and password
+ * - Validate against backend API
+ * - Store user ID and admin status in localStorage
+ * - Dispatch custom event to notify app of login
+ * - Redirect to home page on success
+ * - Show error messages for invalid credentials
+ */
+
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'

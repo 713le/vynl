@@ -1,6 +1,15 @@
+/**
+ * Discover.jsx - Main album discovery page
+ * 
+ * Features:
+ * - Browse "popular" albums by default when page loads
+ * - Search albums in real-time via iTunes API based on navbar search input
+ * - Display results in a grid of album cards
+ * - Loading states and empty state handling
+ */
+
 import React, { useState, useEffect } from 'react'
 import AlbumCard from '../components/AlbumCard'
-import albums from '../data/mockAlbums'
 import { searchAlbums } from '../api/itunes'
 import './Discover.css'
 

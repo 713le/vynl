@@ -1,3 +1,6 @@
+/* AlbumCard.css - Individual album card component styling */
+/* Cards display album artwork, title, artist, and rating button with hover effects */
+
 .album-card {
   border: 1px solid #000;
   display: flex;
@@ -8,6 +11,7 @@
   transition: all 0.2s;
 }
 
+/* Dark background on hover with text color inversion */
 .album-card:hover {
   background: #000;
 }
