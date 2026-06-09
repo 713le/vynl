@@ -13,7 +13,7 @@ export default function FindFriends() {
     
     setSearched(true)
     try {
-      const res = await fetch(`http://localhost:3000/api/users/search/${encodeURIComponent(query)}`)
+      const res = await fetch(`/api/users/search/${encodeURIComponent(query)}`)
       const data = await res.json()
       setResults(data)
     } catch (err) {

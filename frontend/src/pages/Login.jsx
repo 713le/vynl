@@ -26,12 +26,12 @@ export default function Login() {
     setError('')
     setLoading(true)
     try {
-      const res = await axios.post('http://localhost:3000/api/auth/login', {
+      const res = await axios.post('/api/auth/login', {
         username,
         password
       })
       localStorage.setItem('userId', res.data.id)
-      const p = await axios.get(`http://localhost:3000/api/users/${res.data.id}`)
+      const p = await axios.get(`/api/users/${res.data.id}`)
       localStorage.setItem('isAdmin',p.data.admin?'t':'f')
       window.dispatchEvent(new Event('userLoggedIn'))
       nav('/')

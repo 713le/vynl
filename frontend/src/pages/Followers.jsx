@@ -11,13 +11,13 @@ export default function Followers() {
 
   useEffect(() => {
     // Fetch the user's info
-    fetch(`http://localhost:3000/api/users/${userId}`)
+    fetch(`/api/users/${userId}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(err => console.error('Failed to fetch user:', err))
 
     // Fetch followers
-    fetch(`http://localhost:3000/api/followers/${userId}`)
+    fetch(`/api/followers/${userId}`)
       .then(res => res.json())
       .then(data => setFollowers(data))
       .catch(err => console.error('Failed to fetch followers:', err))

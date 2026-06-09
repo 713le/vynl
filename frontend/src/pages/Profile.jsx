@@ -38,16 +38,16 @@ export default function Profile() {
     if (userId) {
       getAllRatings(userId).then(setRatings)
       // Fetch user data
-      fetch(`http://localhost:3000/api/users/${userId}`)
+      fetch(`/api/users/${userId}`)
         .then(res => res.json())
         .then(data => setUser(data))
         .catch(err => console.error('Failed to fetch user:', err))
       // Fetch followers/following counts
-      fetch(`http://localhost:3000/api/followers/${userId}`)
+      fetch(`/api/followers/${userId}`)
         .then(res => res.json())
         .then(data => setFollowerCount(data.length))
         .catch(err => console.error('Failed to fetch followers:', err))
-      fetch(`http://localhost:3000/api/following/${userId}`)
+      fetch(`/api/following/${userId}`)
         .then(res => res.json())
         .then(data => setFollowingCount(data.length))
         .catch(err => console.error('Failed to fetch following:', err))

@@ -15,7 +15,7 @@ export default function Signup() {
     setError('')
     setLoading(true)
     try {
-      const res = await axios.post('http://localhost:3000/api/auth/signup', {
+      const res = await axios.post('/api/auth/signup', {
         username,
         email,
         password

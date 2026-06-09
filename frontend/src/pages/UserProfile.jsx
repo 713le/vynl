@@ -15,30 +15,30 @@ export default function UserProfile() {
 
   useEffect(() => {
     // Fetch user data
-    fetch(`http://localhost:3000/api/users/${userId}`)
+    fetch(`/api/users/${userId}`)
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(err => console.error('Failed to fetch user:', err))
 
     // Fetch ratings
-    fetch(`http://localhost:3000/api/ratings/${userId}`)
+    fetch(`/api/ratings/${userId}`)
       .then(res => res.json())
       .then(data => setRatings(data))
       .catch(err => console.error('Failed to fetch ratings:', err))
 
     // Fetch followers/following counts
-    fetch(`http://localhost:3000/api/followers/${userId}`)
+    fetch(`/api/followers/${userId}`)
       .then(res => res.json())
       .then(data => setFollowers(data))
       .catch(err => console.error('Failed to fetch followers:', err))
-    fetch(`http://localhost:3000/api/following/${userId}`)
+    fetch(`/api/following/${userId}`)
       .then(res => res.json())
       .then(data => setFollowing(data))
       .catch(err => console.error('Failed to fetch following:', err))
 
     // Check follow status
     if (currentUserId) {
-      fetch(`http://localhost:3000/api/follow/status/${userId}?currentUserId=${currentUserId}`)
+      fetch(`/api/follow/status/${userId}?currentUserId=${currentUserId}`)
         .then(res => res.json())
         .then(data => setIsFollowing(data.isFollowing))
         .catch(err => console.error('Failed to check follow status:', err))
@@ -47,7 +47,7 @@ export default function UserProfile() {
 
   const handleFollow = async () => {
     try {
-      await fetch(`http://localhost:3000/api/follow/${userId}`, {
+      await fetch(`/api/follow/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ followerId: parseInt(currentUserId) })
@@ -61,7 +61,7 @@ export default function UserProfile() {
 
   const handleUnfollow = async () => {
     try {
-      await fetch(`http://localhost:3000/api/follow/${userId}`, {
+      await fetch(`/api/follow/${userId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ followerId: parseInt(currentUserId) })

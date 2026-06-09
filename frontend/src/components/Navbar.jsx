@@ -26,7 +26,7 @@ export default function Navbar({ searchValue, onSearchChange }) {
 
   useEffect(() => {
     if (userId) {
-      fetch(`http://localhost:3000/api/users/${userId}`)
+      fetch(`/api/users/${userId}`)
         .then(res => res.json())
         .then(data => setUser(data))
         .catch(err => console.error('Failed to fetch user:', err))

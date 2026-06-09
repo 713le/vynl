@@ -32,7 +32,7 @@ export default function Admin() {
   async function updateUsers(){
     if (userId) {
         try{
-        const res = await fetch('http://localhost:3000/api/admin/users',{
+        const res = await fetch('/api/admin/users',{
             headers:{'Content-Type': 'application/json','adminid':userId}})
         const data = await res.json()
         setUsers(data)}
@@ -44,7 +44,7 @@ export default function Admin() {
 async function deleteUser(id){
     const confirm = window.confirm("Delete user and all their ratings?")
     if(confirm){
-        await fetch(`http://localhost:3000/api/admin/users/${id}`,{
+        await fetch(`/api/admin/users/${id}`,{
             method: 'DELETE', headers:{'Content-Type': 'application/json','adminid':userId}})
         setUsers(users.filter(n=>n.id!==id))
         //setRatings(ratings.filter(n=>n.user_id!==id))
@@ -52,7 +52,7 @@ async function deleteUser(id){
 }
 async function getRatings(user){
     try{
-        const res = await fetch(`http://localhost:3000/api/admin/users/${user.id}/ratings`,{
+        const res = await fetch(`/api/admin/users/${user.id}/ratings`,{
             headers:{'Content-Type': 'application/json','adminid':userId}})
         const data = await res.json()
         setRatings(data)
@@ -65,7 +65,7 @@ async function getRatings(user){
 }
 async function deleteRating(uId,rId){
     try{
-        const res = await fetch(`http://localhost:3000/api/admin/users/${uId}/ratings/${rId}`,{
+        const res = await fetch(`/api/admin/users/${uId}/ratings/${rId}`,{
             method: 'DELETE', headers:{'Content-Type': 'application/json','adminid':userId}})
         setRatings(ratings.filter(n=>n.id!==rId))
     }
@@ -75,7 +75,7 @@ async function deleteRating(uId,rId){
 }
 async function deleteNote(uId,rId){
     try{
-        const res = await fetch(`http://localhost:3000/api/admin/users/${uId}/ratings/${rId}/note`,{
+        const res = await fetch(`/api/admin/users/${uId}/ratings/${rId}/note`,{
             method: 'DELETE', headers:{'Content-Type': 'application/json','adminid':userId}})
         setRatings(ratings.map(r=>r.id===rId?{...r,note:null}:r))
     }
