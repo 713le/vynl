@@ -1,0 +1,15 @@
+{
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
+  "env": [
+    "POSTGRES_HOST",
+    "POSTGRES_PORT",
+    "POSTGRES_DBNAME",
+    "POSTGRES_USERNAME",
+    "POSTGRES_PASSWORD"
+  ],
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
