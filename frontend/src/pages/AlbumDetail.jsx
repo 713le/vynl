@@ -47,6 +47,9 @@ export default function AlbumDetail() {
   const handleRatingComplete = async (score, note) => {
     const category = score >= 6.7 ? 'liked' : score >= 3.7 ? 'ok' : 'disliked'
     await setRating(userId, album.id, { id: album.id, title: album.title, artist: album.artist, artworkUrl: album.artworkUrl }, score, note)
+    // Refetch all ratings so they're available for future comparisons
+    const updated = await getAllRatings(userId)
+    setAllRatings(updated)
     setRatingInProgress(false)
     setRatings({ myRating: score, note })
   }
